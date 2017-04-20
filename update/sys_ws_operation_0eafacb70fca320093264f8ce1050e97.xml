@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl/>
+        <http_method>GET</http_method>
+        <name>getCount</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+
+	var body = {};
+	var incident = new GlideRecord('incident');
+	incident.addActiveQuery();
+	incident.query();
+	
+	body.incident_count = incident.getRowCount();
+
+	var change = new GlideRecord('change_request');
+	change.addActiveQuery();
+	change.query();
+	
+	body.change_count = change.getRowCount();
+
+	var problem = new GlideRecord('problem');
+	problem.addActiveQuery();
+	problem.query();
+	
+	body.problem_count = problem.getRowCount();
+
+	var user = new GlideRecord('sys_user');
+	user.addActiveQuery();
+	user.query();
+	
+	body.user_count = user.getRowCount();
+
+	body.source = request.getHeader('host');
+
+	sleep(3000); 
+	
+	response.setBody(body);
+	
+})(request, response);
+
+function sleep(ms) {  
+	var unixtime_ms = new Date().getTime();  
+	while(new Date().getTime() < unixtime_ms + ms) {		
+	}
+	return;
+}]]></operation_script>
+        <operation_uri>/api/x_12945_rest101/gatherrecordcount</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/</relative_path>
+        <request_example/>
+        <requires_acl_authorization>false</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-04-17 11:14:12</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>0eafacb70fca320093264f8ce1050e97</sys_id>
+        <sys_mod_count>10</sys_mod_count>
+        <sys_name>getCount</sys_name>
+        <sys_package display_value="Rest 101" source="x_12945_rest101">8d7fa8b70fca320093264f8ce1050e0d</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Rest 101">8d7fa8b70fca320093264f8ce1050e0d</sys_scope>
+        <sys_update_name>sys_ws_operation_0eafacb70fca320093264f8ce1050e97</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-04-18 09:08:59</sys_updated_on>
+        <web_service_definition display_value="GatherRecordCount">cd8f2cb70fca320093264f8ce1050ec2</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>
